@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mecanica-execution-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mecanica-execution-service
+  template:
+    metadata:
+      labels:
+        app: mecanica-execution-service
+    spec:
+      containers:
+        - name: execution
+          image: mecanica-execution-service:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: execution-database
+                  key: uri
+            - name: RABBITMQ_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: execution-rabbitmq
+                  key: host
+            - name: BROKER_ENABLED
+              value: "true"
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mecanica-execution-service
+spec:
+  selector:
+    app: mecanica-execution-service
+  ports:
+    - port: 80
+      targetPort: 8080
