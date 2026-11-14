@@ -2,6 +2,7 @@ FROM maven:3.9.11-eclipse-temurin-17 AS build
 WORKDIR /workspace
 COPY pom.xml mvnw.cmd ./
 COPY .mvn .mvn
+COPY newrelic/newrelic newrelic/newrelic
 COPY src src
 RUN mvn -q -DskipTests package
 
