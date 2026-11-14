@@ -1,7 +1,6 @@
 package com.f1rsters.execution.controller;
 
-import com.f1rsters.execution.servide.ExecutionApplicationService;
-import com.f1rsters.execution.domain.Execution;
+import com.f1rsters.execution.service.ExecutionApplicationService;
 import com.f1rsters.execution.dto.AuthorizationRequest;
 import com.f1rsters.execution.dto.ExecutionResponse;
 import com.f1rsters.execution.dto.HistoryResponse;

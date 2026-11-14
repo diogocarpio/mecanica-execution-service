@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.time.OffsetDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ExecutionTest {
@@ -63,5 +64,19 @@ class ExecutionTest {
 
         assertThrows(IllegalStateException.class,
                 () -> execution.cancel(OffsetDateTime.parse("2026-01-01T10:02:00Z")));
+    }
+
+    @Test
+    void deveTestarGetters() {
+        Execution execution = Execution.queue(10L, OffsetDateTime.parse("2026-01-01T10:00:00Z"));
+        execution.startDiagnosis(OffsetDateTime.parse("2026-01-01T10:01:00Z"));
+        execution.complete(OffsetDateTime.parse("2026-01-01T10:02:00Z"));
+
+        assertEquals(10L, execution.getOsId());
+        assertEquals(ExecutionStatus.COMPLETED, execution.getStatus());
+        assertEquals(OffsetDateTime.parse("2026-01-01T10:00:00Z"), execution.getCreatedAt());
+        assertEquals(OffsetDateTime.parse("2026-01-01T10:02:00Z"), execution.getUpdatedAt());
+        assertEquals(OffsetDateTime.parse("2026-01-01T10:00:00Z"), execution.getApprovedAt());
+        assertNotNull(execution.getId());
     }
 }

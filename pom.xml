@@ -17,7 +17,7 @@
     <properties>
         <java.version>17</java.version>
         <jacoco.version>0.8.14</jacoco.version>
-        <jacoco.minimum.coverage>0.80</jacoco.minimum.coverage>
+        <jacoco.minimum.coverage>1.00</jacoco.minimum.coverage>
         <cucumber.version>7.20.1</cucumber.version>
     </properties>
     <dependencies>
@@ -93,6 +93,11 @@
             <artifactId>junit-platform-suite</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -121,13 +126,6 @@
                                 <format>XML</format>
                                 <format>HTML</format>
                             </formats>
-                            <excludes>
-                                <exclude>com/f1rsters/execution/ExecutionServiceApplication.class</exclude>
-                                <exclude>com/f1rsters/execution/controller/**</exclude>
-                                <exclude>com/f1rsters/execution/listener/**</exclude>
-                                <exclude>com/f1rsters/execution/config/**</exclude>
-                                <exclude>com/f1rsters/execution/repository/**</exclude>
-                            </excludes>
                         </configuration>
                     </execution>
                     <execution>
@@ -146,9 +144,12 @@
                                         </limit>
                                     </limits>
                                     <includes>
-                                        <include>com/f1rsters/execution/servide/**</include>
-                                        <include>com/f1rsters/execution/domain/**</include>
+                                        <include>com/f1rsters/execution/**</include>
                                     </includes>
+                                    <excludes>
+                                        <exclude>com/f1rsters/execution/ExecutionServiceApplication.class</exclude>
+                                        <exclude>com/f1rsters/execution/dto/**</exclude>
+                                    </excludes>
                                 </rule>
                             </rules>
                         </configuration>

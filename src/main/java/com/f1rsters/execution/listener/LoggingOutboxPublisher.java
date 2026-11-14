@@ -1,6 +1,6 @@
 package com.f1rsters.execution.listener;
 
-import com.f1rsters.execution.servide.OutboxPublisher;
+import com.f1rsters.execution.service.OutboxPublisher;
 import com.f1rsters.execution.domain.OutboxEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.f1rsters.execution.servide;
+package com.f1rsters.execution.service;
 
 import com.f1rsters.execution.repository.ExecutionRepository;
 import com.f1rsters.execution.repository.ExecutionHistoryRepository;
