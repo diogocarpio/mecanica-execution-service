@@ -1,0 +1,79 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mecanica-execution-service:local
+    container_name: mecanica-execution-service
+    env_file:
+      - .env
+    environment:
+      MONGODB_URI: ${MONGODB_URI:-mongodb://mongodb:27017/execution}
+      SPRING_MONGODB_URI: ${MONGODB_URI:-mongodb://mongodb:27017/execution}
+      RABBITMQ_HOST: ${RABBITMQ_HOST:-rabbitmq}
+      RABBITMQ_PORT: ${RABBITMQ_PORT:-5672}
+      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-execution}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-execution}
+      BROKER_ENABLED: ${BROKER_ENABLED:-true}
+      RABBITMQ_EXCHANGE: ${RABBITMQ_EXCHANGE:-os.exchange}
+      SERVER_PORT: ${SERVER_PORT:-8080}
+    ports:
+      - "${SERVER_PORT:-8080}:8080"
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - execution
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo:7.0
+    container_name: mongoDb
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE:-execution}
+    ports:
+      - "${MONGODB_PORT:-27017}:27017"
+    volumes:
+      - mongodb-data:/data/db
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - mongosh --quiet --eval "db.adminCommand('ping').ok" localhost:27017/test | grep 1
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    networks:
+      - execution
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:4.1-management
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME:-execution}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-execution}
+    ports:
+      - "${RABBITMQ_PORT:-5672}:5672"
+      - "${RABBITMQ_MANAGEMENT_PORT:-15672}:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    networks:
+      - execution
+    restart: unless-stopped
+
+networks:
+  execution:
+    name: mecanica-execution
+
+volumes:
+  mongodb-data:
+  rabbitmq-data:
