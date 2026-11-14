@@ -58,6 +58,12 @@ spec:
                   name: execution-database
                   key: uri
                   optional: false
+            - name: SPRING_MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: execution-database
+                  key: uri
+                  optional: false
             - name: RABBITMQ_HOST
               valueFrom:
                 secretKeyRef:

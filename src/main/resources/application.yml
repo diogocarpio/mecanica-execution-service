@@ -1,10 +1,9 @@
 spring:
   application:
     name: mecanica-execution-service
-  data:
-    mongodb:
-      uri: ${MONGODB_URI:mongodb://localhost:27017/execution}
-      auto-index-creation: true
+  mongodb:
+    uri: ${MONGODB_URI:mongodb://localhost:27017/execution}
+    auto-index-creation: true
   rabbitmq:
     host: ${RABBITMQ_HOST:localhost}
     port: ${RABBITMQ_PORT:5672}
@@ -25,6 +24,7 @@ management:
         enabled: true
 server:
   port: ${SERVER_PORT:8080}
-BROKER_ENABLED: ${BROKER_ENABLED:false}
-MONGODB_URI: ${MONGODB_URI:mongodb://localhost:27017/execution}
-RABBITMQ_EXCHANGE: ${RABBITMQ_EXCHANGE:os.exchange}
+broker:
+  enabled: ${BROKER_ENABLED:true}
+rabbitmq:
+  exchange: ${RABBITMQ_EXCHANGE:os.exchange}

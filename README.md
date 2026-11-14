@@ -74,6 +74,48 @@ Esses endpoints serão revisados quando os contratos OS/Billing forem formalizad
 .\mvnw.cmd spring-boot:run
 ```
 
+### Docker Compose
+
+Copie o contrato de variáveis e suba o ambiente completo:
+
+```powershell
+Copy-Item .env.example .env
+docker compose up --build
+```
+
+O Compose sobe a aplicação, MongoDB e RabbitMQ na mesma rede Docker. A aplicação
+fica disponível em `http://localhost:8080`, o painel do RabbitMQ em
+`http://localhost:15672` e o broker AMQP em `localhost:5672`. As credenciais
+locais padrão são `execution` / `execution`; altere o arquivo `.env` quando
+necessário.
+
+O RabbitMQ é habilitado com `BROKER_ENABLED=true`. Na inicialização, o próprio
+Spring AMQP declara a exchange durável `os.exchange` do tipo `topic`, as filas e
+os bindings usados pelos listeners:
+
+| Fila | Routing key | Função |
+|---|---|---|
+| `execution.os.approved.queue` | `os.approved` | Autoriza a execução da OS |
+| `execution.os.cancelled.queue` | `os.cancelled` | Processa o cancelamento da OS |
+
+As filas de consumo usam a exchange de dead letter `os.exchange.dlx` e suas
+respectivas DLQs (`execution.os.approved.dlq` e
+`execution.os.cancelled.dlq`). A aplicação também declara as filas de
+publicação previstas em `MessagingConfig`, mas elas não são listeners de
+entrada.
+
+Para acompanhar os serviços ou desligar o ambiente:
+
+```powershell
+docker compose ps
+docker compose logs -f app
+docker compose down
+docker compose down -v # remove também os dados locais
+```
+
+O `.env` é ignorado pelo Git e deve conter somente valores locais; não use essas
+credenciais padrão em produção.
+
 Para executar o fluxo BDD completo de autorização, diagnóstico, reparo e conclusão:
 
 ```powershell
