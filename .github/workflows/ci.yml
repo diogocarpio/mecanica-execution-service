@@ -25,6 +25,8 @@ jobs:
           distribution: temurin
           java-version: ${{ env.JAVA_VERSION }}
           cache: maven
+      - name: Make Maven Wrapper executable
+        run: chmod +x ./mvnw
       - name: Run tests and coverage
         run: ./mvnw -B verify
       - uses: actions/upload-artifact@v4
