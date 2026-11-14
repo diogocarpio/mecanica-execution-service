@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mecanica-execution-config
+  labels:
+    app.kubernetes.io/name: mecanica-execution-service
+data:
+  BROKER_ENABLED: "true"
+  RABBITMQ_PORT: "5672"
+  RABBITMQ_EXCHANGE: "os.exchange"
+  SERVER_PORT: "8080"
