@@ -2,7 +2,7 @@ name: execution-service-ci-cd
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop, homologacao]
   pull_request:
     branches: [main]
 
@@ -41,6 +41,7 @@ jobs:
   sonar-fortify:
     name: Sonar and Fortify Analysis
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     needs: build-test
     steps:
       - uses: actions/checkout@v4
@@ -67,7 +68,7 @@ jobs:
             -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
             -Dsonar.qualitygate.wait=true
       - name: Fortify Scan
-        uses: fortify/fortify-scan-action@v2
+        uses: fortify/github-action@v3
         with:
           fortify_api_key: ${{ secrets.FORTIFY_API_KEY }}
           fortify_url: ${{ vars.FORTIFY_URL }}
