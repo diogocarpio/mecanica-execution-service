@@ -139,7 +139,7 @@ public class ExecutionApplicationService {
     private String eventPayload(Execution execution, String eventType, OffsetDateTime timestamp) {
         return "{\"eventId\":\"" + UUID.randomUUID() + "\",\"osId\":" + execution.getOsId()
                 + ",\"clienteId\":null,\"veiculoId\":null,\"servicosIds\":[],\"pecasIds\":[],"
-                + "\"valorTotal\":0,\"status\":\"" + externalStatus(execution.getStatus())
+                + "\"status\":\"" + externalStatus(execution.getStatus())
                 + "\",\"eventType\":\"" + eventType + "\",\"timestamp\":\"" + timestamp + "\"}";
     }
 

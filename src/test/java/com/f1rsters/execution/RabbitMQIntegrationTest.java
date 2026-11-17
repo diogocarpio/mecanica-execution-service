@@ -19,7 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
-import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -64,7 +63,7 @@ class RabbitMQIntegrationTest {
         Long osId = 500L;
         String body = String.format(
                 "{\"eventId\":\"%s\",\"osId\":%d,\"clienteId\":\"cli1\",\"veiculoId\":\"veh1\","
-                        + "\"servicosIds\":[\"srv1\"],\"pecasIds\":[\"p1\"],\"valorTotal\":100.0,"
+                        + "\"servicosIds\":[\"srv1\"],\"pecasIds\":[\"p1\"],"
                         + "\"status\":\"APPROVED\",\"eventType\":\"os.approved\",\"timestamp\":\"2026-01-01T10:00:00Z\"}",
                 eventId, osId);
 
@@ -90,7 +89,7 @@ class RabbitMQIntegrationTest {
 
         String body = String.format(
                 "{\"eventId\":\"%s\",\"osId\":%d,\"clienteId\":\"cli1\",\"veiculoId\":\"veh1\","
-                        + "\"servicosIds\":[\"srv1\"],\"pecasIds\":[\"p1\"],\"valorTotal\":100.0,"
+                        + "\"servicosIds\":[\"srv1\"],\"pecasIds\":[\"p1\"],"
                         + "\"status\":\"CANCELLED\",\"eventType\":\"os.cancelled\",\"timestamp\":\"2026-01-01T10:00:00Z\"}",
                 eventId, osId);
 
@@ -113,7 +112,7 @@ class RabbitMQIntegrationTest {
         Long osId = 502L;
         String body = String.format(
                 "{\"eventId\":\"%s\",\"osId\":%d,\"clienteId\":\"cli1\",\"veiculoId\":\"veh1\","
-                        + "\"servicosIds\":[\"srv1\"],\"pecasIds\":[\"p1\"],\"valorTotal\":100.0,"
+                        + "\"servicosIds\":[\"srv1\"],\"pecasIds\":[\"p1\"],"
                         + "\"status\":\"APPROVED\",\"eventType\":\"os.approved\",\"timestamp\":\"2026-01-01T10:00:00Z\"}",
                 eventId, osId);
 
@@ -155,7 +154,7 @@ class RabbitMQIntegrationTest {
         UUID eventId = UUID.randomUUID();
         String body = String.format(
                 "{\"eventId\":\"%s\",\"osId\":null,\"clienteId\":\"cli1\",\"veiculoId\":\"veh1\","
-                        + "\"servicosIds\":[\"srv1\"],\"pecasIds\":[\"p1\"],\"valorTotal\":100.0,"
+                        + "\"servicosIds\":[\"srv1\"],\"pecasIds\":[\"p1\"],"
                         + "\"status\":\"APPROVED\",\"eventType\":\"os.approved\",\"timestamp\":\"2026-01-01T10:00:00Z\"}",
                 eventId);
 
