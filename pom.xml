@@ -19,8 +19,8 @@
         <jacoco.version>0.8.14</jacoco.version>
         <jacoco.minimum.coverage>1.00</jacoco.minimum.coverage>
         <cucumber.version>7.20.1</cucumber.version>
-        <sonar.projectKey>mecanica-execution-service</sonar.projectKey>
-        <sonar.organization>Diogo Felix</sonar.organization>
+        <sonar.projectKey>diogocarpio_mecanica-execution-service</sonar.projectKey>
+        <sonar.organization>diogocarpio</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
     <dependencies>
@@ -124,6 +124,9 @@
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>5.6.0.6792</version>
+                <configuration>
+                    <sonar.exclusions>**/dto/**,**/model/**,**/config/**,**/ExecutionServiceApplication.java,pom.xml,.github/**</sonar.exclusions>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
