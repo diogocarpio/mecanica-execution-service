@@ -88,8 +88,6 @@ public class MessagingConfig {
 
     @Bean
     RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
-        RabbitTemplate template = new RabbitTemplate(connectionFactory);
-        template.setMessageConverter(new org.springframework.amqp.support.converter.Jackson2JsonMessageConverter());
-        return template;
+        return new RabbitTemplate(connectionFactory);
     }
 }
