@@ -1,8 +1,8 @@
 # Mecanica Execution Service
 
-Microsserviço responsável pela execução técnica das ordens de serviço. A implementação
-está sendo extraída do monólito de forma incremental; contratos de integração ainda
-provisórios não representam o contrato final do grupo.
+Microsserviço responsável pela execução técnica das ordens de serviço, extraído do
+monólito e integrado ao ecossistema via Saga coreografada no RabbitMQ (ver
+`docs/saga-e-compensacoes.md` e `docs/contratos-integracao.md`).
 
 ## Responsabilidades
 
@@ -52,17 +52,25 @@ provisórios não representam o contrato final do grupo.
 └── README.md
 ```
 
-## Endpoints provisórios
+## Endpoints
 
 - `POST /api/executions/authorization` cria ou retorna a execução da OS (`osId`)
 - `GET /api/executions/queue` consulta a fila FIFO por aprovação
+- `POST /api/executions/{executionId}/diagnosis/start` inicia o diagnóstico
+- `POST /api/executions/{executionId}/repairs/start` inicia os reparos
 - `POST /api/executions/{executionId}/complete` conclui a execução localmente
+- `POST /api/executions/{executionId}/cancel` cancela a execução
+- `GET /api/executions/{executionId}/history` consulta o histórico de transições
 
-Esses endpoints serão revisados quando os contratos OS/Billing forem formalizados.
+## Documentação da API
+
+- **Swagger UI**: `http://localhost:8080/swagger-ui.html`
+- **OpenAPI JSON**: `http://localhost:8080/v3/api-docs`
+- **Coleção Postman**: `postman/execution-service.postman_collection.json`
 
 ## Próximos passos
 
-1. Validar o contrato final de eventos com o OS Service.
+1. Manter os contratos de eventos alinhados com OS/Billing em mudanças futuras.
 2. Executar MongoDB e RabbitMQ no ambiente de integração.
 3. Adicionar testes ponta a ponta e BDD distribuído.
 4. Configurar CI/CD, DLQ e observabilidade operacional.
