@@ -56,8 +56,6 @@
             <groupId>com.newrelic.agent.java</groupId>
             <artifactId>newrelic-api</artifactId>
             <version>9.4.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/newrelic/newrelic/newrelic-api.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -115,9 +113,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <includeSystemScope>true</includeSystemScope>
-                </configuration>
             </plugin>
             <!-- SonarQube para análise de qualidade -->
             <plugin>
@@ -126,6 +121,7 @@
                 <version>5.6.0.6792</version>
                 <configuration>
                     <sonar.exclusions>**/dto/**,**/model/**,**/config/**,**/ExecutionServiceApplication.java,pom.xml,.github/**</sonar.exclusions>
+                    <sonar.coverage.exclusions>**/ExecutionServiceApplication.java,**/dto/**</sonar.coverage.exclusions>
                 </configuration>
             </plugin>
             <plugin>
