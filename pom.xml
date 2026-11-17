@@ -134,6 +134,10 @@
                                 <format>XML</format>
                                 <format>HTML</format>
                             </formats>
+                            <excludes>
+                                <exclude>com/f1rsters/execution/ExecutionServiceApplication.class</exclude>
+                                <exclude>com/f1rsters/execution/dto/**</exclude>
+                            </excludes>
                         </configuration>
                     </execution>
                     <execution>
