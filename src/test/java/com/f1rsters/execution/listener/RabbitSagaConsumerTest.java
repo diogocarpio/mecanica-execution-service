@@ -11,7 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -45,7 +44,7 @@ class RabbitSagaConsumerTest {
         OSEvent event = new OSEvent(
                 eventId, osId, "cliente1", "veiculo1",
                 List.of("servico1"), List.of("peca1"),
-                BigDecimal.valueOf(100.0), "APPROVED",
+                "APPROVED",
                 "os.approved", OffsetDateTime.now()
         );
         
@@ -70,7 +69,7 @@ class RabbitSagaConsumerTest {
         OSEvent event = new OSEvent(
                 eventId, null, "cliente1", "veiculo1",
                 List.of("servico1"), List.of("peca1"),
-                BigDecimal.valueOf(100.0), "APPROVED",
+                "APPROVED",
                 "os.approved", OffsetDateTime.now()
         );
         
@@ -95,7 +94,7 @@ class RabbitSagaConsumerTest {
         OSEvent event = new OSEvent(
                 eventId, osId, "cliente1", "veiculo1",
                 List.of("servico1"), List.of("peca1"),
-                BigDecimal.valueOf(100.0), "CANCELLED",
+                "CANCELLED",
                 "os.cancelled", OffsetDateTime.now()
         );
         
@@ -120,7 +119,7 @@ class RabbitSagaConsumerTest {
         OSEvent event = new OSEvent(
                 eventId, null, "cliente1", "veiculo1",
                 List.of("servico1"), List.of("peca1"),
-                BigDecimal.valueOf(100.0), "CANCELLED",
+                "CANCELLED",
                 "os.cancelled", OffsetDateTime.now()
         );
         

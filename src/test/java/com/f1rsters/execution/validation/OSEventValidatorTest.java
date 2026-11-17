@@ -4,7 +4,6 @@ import com.f1rsters.execution.dto.OSEvent;
 import com.f1rsters.execution.exception.SagaContractException;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -24,7 +23,6 @@ class OSEventValidatorTest {
                 "veiculo1",
                 List.of("servico1"),
                 List.of("peca1"),
-                BigDecimal.valueOf(100.0),
                 "APPROVED",
                 "os.approved",
                 OffsetDateTime.now()
@@ -42,7 +40,6 @@ class OSEventValidatorTest {
                 "veiculo1",
                 List.of("servico1"),
                 List.of("peca1"),
-                BigDecimal.valueOf(100.0),
                 "APPROVED",
                 "os.approved",
                 OffsetDateTime.now()
