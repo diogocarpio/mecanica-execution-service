@@ -41,7 +41,6 @@ jobs:
   sonar:
     name: Sonar Analysis
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
     needs: build-test
     steps:
       - uses: actions/checkout@v4
@@ -52,25 +51,34 @@ jobs:
           distribution: temurin
           java-version: ${{ env.JAVA_VERSION }}
           cache: maven
-      - uses: actions/download-artifact@v4
+      - name: Run tests and coverage
+        run: mvn -B verify
+      - uses: actions/setup-java@v4
         with:
-          name: test-and-coverage-reports
-          path: target
+          distribution: temurin
+          java-version: '21'
       - name: SonarCloud analysis
-        uses: SonarSource/sonarqube-scan-action@v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: https://sonarcloud.io
+          SONAR_QG_WAIT: ${{ github.event_name == 'pull_request' || github.ref == 'refs/heads/main' }}
+        run: >-
+          if [ -z "${SONAR_TOKEN}" ]; then
+            echo "::warning::SONAR_TOKEN não configurado. Análise SonarCloud ignorada.";
+            exit 0;
+          fi;
+          mvn -B sonar:sonar
+          -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
+          -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
+          -Dsonar.qualitygate.wait=${{ env.SONAR_QG_WAIT }}
+      - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          args: >-
-            -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
-            -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
-            -Dsonar.sources=src/main/java
-            -Dsonar.java.binaries=target/classes
-            -Dsonar.java.libraries=target/classes
-            -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
-            -Dsonar.exclusions=target/**,terraform/**
-            -Dsonar.qualitygate.wait=true
+          name: test-and-coverage-reports
+          path: |
+            target/surefire-reports
+            target/site/jacoco
+            target/classes
 
   docker-build:
 
