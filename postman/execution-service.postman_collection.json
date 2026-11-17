@@ -1,0 +1,70 @@
+{
+  "info": {
+    "name": "Execution Service",
+    "description": "Microsserviço de execução técnica das ordens de serviço (Tech Challenge Fase 4)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "executionId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Autorizar execução (criar/retornar por osId)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"osId\": \"1\"\n}" },
+        "url": { "raw": "{{baseUrl}}/api/executions/authorization", "host": ["{{baseUrl}}"], "path": ["api", "executions", "authorization"] }
+      }
+    },
+    {
+      "name": "Fila de execução",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/api/executions/queue", "host": ["{{baseUrl}}"], "path": ["api", "executions", "queue"] }
+      }
+    },
+    {
+      "name": "Iniciar diagnóstico",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/api/executions/{{executionId}}/diagnosis/start", "host": ["{{baseUrl}}"], "path": ["api", "executions", "{{executionId}}", "diagnosis", "start"] }
+      }
+    },
+    {
+      "name": "Iniciar reparos",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/api/executions/{{executionId}}/repairs/start", "host": ["{{baseUrl}}"], "path": ["api", "executions", "{{executionId}}", "repairs", "start"] }
+      }
+    },
+    {
+      "name": "Concluir execução",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/api/executions/{{executionId}}/complete", "host": ["{{baseUrl}}"], "path": ["api", "executions", "{{executionId}}", "complete"] }
+      }
+    },
+    {
+      "name": "Cancelar execução",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/api/executions/{{executionId}}/cancel", "host": ["{{baseUrl}}"], "path": ["api", "executions", "{{executionId}}", "cancel"] }
+      }
+    },
+    {
+      "name": "Histórico da execução",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/api/executions/{{executionId}}/history", "host": ["{{baseUrl}}"], "path": ["api", "executions", "{{executionId}}", "history"] }
+      }
+    }
+  ]
+}

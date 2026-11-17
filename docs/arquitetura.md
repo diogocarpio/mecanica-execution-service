@@ -40,17 +40,18 @@ validation
 O domínio não dependerá de HTTP ou RabbitMQ. DTOs são convertidos por `mapper`, e a
 persistência MongoDB fica isolada em `repository`.
 
-## Fluxo provisório de integração
+## Fluxo de integração
 
-Até a confirmação do grupo, o serviço usará contratos versionados provisórios para:
+O serviço participa da Saga coreografada via RabbitMQ (`os.exchange`), com contratos
+alinhados ao OS Service (`docs/contratos-integracao.md`):
 
-1. autorizar uma execução;
+1. autorizar uma execução (`os.approved`);
 2. consultar/iniciar o trabalho local;
-3. registrar conclusão;
-4. solicitar cancelamento quando a compensação for possível.
+3. registrar conclusão (`execution.completed`);
+4. cancelar quando a compensação for possível (`os.cancelled`).
 
-Esses contratos serão substituíveis sem alterar o domínio. A integração real só será
-declarada após validação com OS/Billing e execução ponta a ponta.
+O domínio não depende de HTTP ou RabbitMQ. A integração real está declarada e
+validada ponta a ponta com o OS Service.
 
 ## Consistência
 
