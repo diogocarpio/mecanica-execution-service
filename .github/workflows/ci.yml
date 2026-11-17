@@ -68,6 +68,7 @@ jobs:
             -Dsonar.java.binaries=target/classes
             -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
             -Dsonar.exclusions=target/**,terraform/**
+            -Dsonar.qualitygate.wait=true
 
   docker-build:
 
