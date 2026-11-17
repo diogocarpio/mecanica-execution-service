@@ -31,7 +31,31 @@ class PersistenceValueTest {
 
         assertEquals(executionId, history.getExecutionId());
         assertEquals("QUEUED", history.getFromStatus());
+        assertEquals("IN_DIAGNOSIS", history.getToStatus());
         assertEquals(eventId, inbox.getEventId());
         assertEquals("execution.authorized.v1", inbox.getEventType());
+        assertEquals(now, history.getOccurredAt());
+        assertEquals(now, inbox.getProcessedAt());
+        assertNotNull(history.getId());
+    }
+
+    @Test
+    void protectedConstructorsAreAvailableForPersistence() {
+        assertNotNull(new Execution());
+        assertNotNull(new OutboxEvent());
+        assertNotNull(new ExecutionHistory());
+        assertNotNull(new InboxProcessedMessage());
+    }
+
+    @Test
+    void executionExposesItsPersistenceFields() {
+        Execution execution = new Execution();
+
+        assertNull(execution.getId());
+        assertNull(execution.getOsId());
+        assertNull(execution.getStatus());
+        assertNull(execution.getApprovedAt());
+        assertNull(execution.getCreatedAt());
+        assertNull(execution.getUpdatedAt());
     }
 }
