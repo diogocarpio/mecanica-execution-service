@@ -75,6 +75,28 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: build-test
     runs-on: ubuntu-latest
+    outputs:
+      image-tag: ${{ steps.image.outputs.image-tag }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        id: image
+        run: |
+          docker build --tag "mecanica-execution-service:${{ github.sha }}" .
+          echo "image-tag=mecanica-execution-service:${{ github.sha }}" >> "$GITHUB_OUTPUT"
+      - name: Save Docker image
+        run: docker save "mecanica-execution-service:${{ github.sha }}" | gzip > image.tar.gz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: docker-image
+          path: image.tar.gz
+
+  docker-push:
+
+    name: Push Docker Image to ECR
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: docker-build
+    runs-on: ubuntu-latest
     environment: staging
     permissions:
       contents: read
@@ -82,7 +104,11 @@ jobs:
     outputs:
       image: ${{ steps.image.outputs.image }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: docker-image
+      - name: Load Docker image
+        run: docker load < image.tar.gz
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -91,21 +117,21 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
-      - name: Build and publish image
+      - name: Tag and publish image
         id: image
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: ${{ vars.ECR_REPOSITORY }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build --tag "$REGISTRY/$REPOSITORY:$IMAGE_TAG" .
+          docker tag "mecanica-execution-service:$IMAGE_TAG" "$REGISTRY/$REPOSITORY:$IMAGE_TAG"
           docker push "$REGISTRY/$REPOSITORY:$IMAGE_TAG"
           echo "image=$REGISTRY/$REPOSITORY:$IMAGE_TAG" >> "$GITHUB_OUTPUT"
 
   deploy-staging:
     name: Deploy staging
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [docker-build, sonar]
+    needs: [docker-push, sonar]
     runs-on: ubuntu-latest
     environment: staging
     permissions:
@@ -162,7 +188,7 @@ jobs:
   deploy-production:
     name: Promote production
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [docker-build, deploy-staging]
+    needs: [docker-push, deploy-staging]
     runs-on: ubuntu-latest
     environment: production
     permissions:
