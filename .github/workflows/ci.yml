@@ -55,6 +55,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: test-and-coverage-reports
+          path: target
       - name: SonarCloud analysis
         uses: SonarSource/sonarqube-scan-action@v6
         env:
@@ -66,6 +67,7 @@ jobs:
             -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
             -Dsonar.sources=src/main/java
             -Dsonar.java.binaries=target/classes
+            -Dsonar.java.libraries=target/classes
             -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
             -Dsonar.exclusions=target/**,terraform/**
             -Dsonar.qualitygate.wait=true
