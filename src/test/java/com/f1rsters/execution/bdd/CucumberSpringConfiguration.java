@@ -8,7 +8,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 @CucumberContextConfiguration
 @SpringBootTest(
-        classes = com.f1rsters.execution.ExecutionServiceApplication.class,
         properties = {
                 "spring.autoconfigure.exclude="
                         + "org.springframework.boot.mongodb.autoconfigure.MongoAutoConfiguration,"
